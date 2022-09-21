@@ -1,57 +1,50 @@
 class Solution {
-       class pair{
-        int key;
-        double value;
+    class node {
+        int v;
+        double cost;
 
-        public pair(int key,double value){
-            this.key = key;
-            this.value = value;
+        public node(int v, double cost) {
+            this.v = v;
+            this.cost = cost;
         }
-
-        public int getKey(){return key;}
-        public double getValue(){return value;}
     }
 
     public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
-        ArrayList<ArrayList<pair>> adj = new ArrayList<>();
-        for (int i = 0; i < n; i++) adj.add(new ArrayList<>());
-
+        ArrayList<node>[] adjList = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            adjList[i] = new ArrayList<>();
+        }
         for (int i = 0; i < edges.length; i++) {
-            adj.get(edges[i][0]).add(new pair(edges[i][1], succProb[i]));
-            adj.get(edges[i][1]).add(new pair(edges[i][0], succProb[i]));
+            int u = edges[i][0];
+            int v = edges[i][1];
+            double cost = succProb[i];
+            adjList[u].add(new node(v, cost));
+            adjList[v].add(new node(u, cost));
         }
 
-        double prob[] = new double[n];
-        PriorityQueue<pair> pq = new PriorityQueue<>((a, b) -> {
-            if (b.getValue() > a.getValue()) {
+        double[] dist = new double[n];
+        
+        PriorityQueue<node> pq = new PriorityQueue<>((a, b) -> {
+            if (b.cost > a.cost) {
                 return 1;
             }
             return -1;
-
         });
-        Arrays.fill(prob, 0);
-        prob[start] = 1;
-        pq.offer(new pair(start, 1));
+
+        dist[start] = 1;
+        pq.add(new node(start, 1));
 
         while (!pq.isEmpty()) {
-            int u = pq.poll().getKey();
-
-            for (pair p : adj.get(u)) {
-                int v = p.getKey();
-                double cost = p.getValue();
-
-                if (prob[v] == 0) {
-                    prob[v] = prob[u] * cost;
-                    pq.offer(new pair(v, prob[v]));
-                } else {
-                    if (prob[u] * cost > prob[v]) {
-                        prob[v] = prob[u] * cost;
-                        pq.offer(new pair(v, prob[v]));
-                    }
+            int u = pq.poll().v;
+            for (int i = 0; i < adjList[u].size(); i++) {
+                int v = adjList[u].get(i).v;
+                double v_cost = adjList[u].get(i).cost;
+                if (dist[v] == 0 || dist[u] * v_cost > dist[v]) {
+                    dist[v] = dist[u] * v_cost;
+                    pq.add(new node(v, dist[v]));
                 }
             }
         }
-
-        return prob[end];
+        return dist[end];
     }
 }
