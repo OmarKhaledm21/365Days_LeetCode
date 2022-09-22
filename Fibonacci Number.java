@@ -1,20 +1,23 @@
 class Solution {
-    public static void main(String[] args) {
-        System.out.println(
-                new Solution().fib(4)
-        );
-    }
-
-    public int fib(int n) {
+     public int fib(int n) {
         if (n <= 1) {
             return n;
         }
-        int[] fib = new int[n + 1];
-        fib[0] = 0;
-        fib[1] = 1;
-        for (int i = 2; i <= n; i++) {
-            fib[i] = fib[i - 1] + fib[i - 2];
+        int[] seq = new int[n + 1];
+        seq[0] = 0;
+        seq[1] = 1;
+        fib(n, seq);
+        return seq[n];
+
+    }
+
+    public int fib(int i, int[] seq) {
+        if (i <= 1) {
+            return i;
         }
-        return fib[n];
+        if (seq[i] == 0) {
+            seq[i] = fib(i - 1, seq) + fib(i - 2, seq);
+        }
+        return seq[i];
     }
 }

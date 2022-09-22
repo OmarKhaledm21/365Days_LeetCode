@@ -1,26 +1,16 @@
-import java.util.Scanner;
-
 class Solution {
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        System.out.println(solution.climbStairs(2));
-    }
-
-    public static int[] memoization = new int[46];
-
-    public int climbStairs(int n) {
-        if(n<0){
-            return 0;
+     public int climbStairs(int n) {
+        if (n <= 2) {
+            return n;
         }
-        if(n==0){
-            return 1;
+        int[] seq = new int[n + 1];
+        seq[1] = 1;
+        seq[2] = 2;
+
+        for (int i = 3; i <= n; i++) {
+            seq[i] = seq[i - 1] + seq[i - 2];
         }
 
-        if(memoization[n]!=0){
-            return memoization[n];
-        }
-
-        memoization[n] = climbStairs(n-1) + climbStairs(n-2);
-        return memoization[n];
+        return seq[n];
     }
 }
