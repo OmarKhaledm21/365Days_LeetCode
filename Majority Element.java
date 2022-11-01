@@ -1,27 +1,25 @@
-public int majorityElement(int[] nums) {
-        if(nums.length==0){
-            return 0;
-        }else if(nums.length==1){
-            return nums[0];
-        }
-        Hashtable<Integer,Integer> majority = new Hashtable<>();
-        int max=0;
-        int element=0;
-        for(int i=0; i< nums.length; i++){
-            if(majority.containsKey(nums[i])){
-                int c = majority.get(nums[i])+1;
-                majority.put(nums[i],c+1);
-                if(c>max){
-                    max=c;
-                    element = nums[i];
-                }
-            }else{
-                majority.put(nums[i],1);
-            }
+class Solution {
+    public int majorityElement(int[] nums) {
+    int n = nums.length;
+    int threshold = n / 2;
 
+    HashMap<Integer, Integer> map = new HashMap<>();
+
+    for (int i = 0; i < n; i++) {
+        int element = nums[i];
+        int freq = map.getOrDefault(element, 0);
+        if (freq + 1 > threshold) {
+            return element;
+        } else {
+            map.put(element, freq + 1);
         }
-        if(max==1){
-            return 0;
-        }
-        return element;
     }
+    for (var key : map.keySet()) {
+        int freq = map.get(key);
+        if (freq > n / 2) {
+            return key;
+        }
+    }
+    return 0;
+}
+}
