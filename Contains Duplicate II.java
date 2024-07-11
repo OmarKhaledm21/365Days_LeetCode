@@ -1,24 +1,23 @@
 class Solution {
-   public boolean containsNearbyDuplicate(int[] nums, int k) {
-      if (nums.length == k || k > nums.length) {
-            k = nums.length - 1;
-        }
-       Set<Integer> set = new HashSet<>();
-        for (int i = 0; i <= k; i++) {
-            if (set.contains(nums[i])){
-                return true;
-            }
-            set.add(nums[i]);
-        }
-
-        for (int i=1; i<nums.length-k; i++){
-            set.remove(nums[i-1]);
-            if (set.contains(nums[i+k])){
-                return true;
-            }else{
-                set.add(nums[i+k]);
-            }
-        }
-        return false;
-    }
+public boolean containsNearbyDuplicate(int[] nums, int k) {
+		HashMap<Integer, List<Integer>> map = new HashMap();
+		for (int i = 0; i < nums.length; i++) {
+			List<Integer> list;
+			if (map.containsKey(nums[i])) {
+				list = map.get(nums[i]);
+				for (var j : list) {
+					if (i != j && Math.abs(i - j) <= k) {
+						return true;
+					}
+				}
+				list.add(i);
+				map.put(nums[i], list);
+			} else {
+				list = new ArrayList();
+				list.add(i);
+				map.put(nums[i], list);
+			}
+		}
+		return false;
+	}
 }
