@@ -1,26 +1,32 @@
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode() {}
+ * TreeNode(int val) { this.val = val; }
+ * TreeNode(int val, TreeNode left, TreeNode right) {
+ * this.val = val;
+ * this.left = left;
+ * this.right = right;
+ * }
  * }
  */
 class Solution {
-      public boolean isSymmetric(TreeNode root) {
-        return checkSymmetric(root.left,root.right);
+    public boolean isSymmetric(TreeNode root) {
+        return isSymmetric(root.left, root.right);
     }
-    public boolean checkSymmetric(TreeNode p1, TreeNode p2) {
-        if(p1 == null && p2 == null) return true;
-        if(p1 == null || p2 == null) return false;
-        if(p1.val != p2.val) return false;
-        return (checkSymmetric(p1.left,p2.right) && checkSymmetric(p1.right,p2.left));
+
+    public boolean isSymmetric(TreeNode node1, TreeNode node2) {
+        if (node1 == null && node2 == null) {
+            return true;
+        } else if (node1 == null || node2 == null) {
+            return false;
+        } else if (node1.val != node2.val) {
+            return false;
+        }
+        return isSymmetric(node1.left, node2.right) && isSymmetric(node1.right, node2.left);
+
     }
 }
