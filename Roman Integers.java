@@ -1,43 +1,35 @@
-import java.util.Hashtable;
-
 class Solution {
-    public int romanToInt(String s) {
-        Hashtable<String, Integer> romanIntMap = new Hashtable<>();
-        romanIntMap.put("I",1);
-        romanIntMap.put("V",5);
-        romanIntMap.put("X",10);
-        romanIntMap.put("L",50);
-        romanIntMap.put("C",100);
-        romanIntMap.put("D",500);
-        romanIntMap.put("M",1000);
+   	public int romanToInt(String s) {
+		Map<String, Integer> map = new HashMap();
+		map.put("I", 1);
+		map.put("V", 5);
+		map.put("X", 10);
+		map.put("L", 50);
+		map.put("C", 100);
+		map.put("D", 500);
+		map.put("M", 1000);
+		map.put("IV", 4);
+		map.put("IX", 9);
+		map.put("XL", 40);
+		map.put("XC", 90);
+		map.put("CD", 400);
+		map.put("CM", 900);
 
-        romanIntMap.put("IV",4);
-        romanIntMap.put("IX",9);
-        romanIntMap.put("XL",40);
-        romanIntMap.put("XC",90);
-        romanIntMap.put("CD",400);
-        romanIntMap.put("CM",900);
-
-        int res = 0;
-        for(int i=0; i<s.length(); i++){
-            String seq = String.valueOf(s.charAt(i));
-            int temp = romanIntMap.get(seq);
-            if( i+1 < s.length() ){
-                seq+= s.charAt(i+1);
-                if(romanIntMap.containsKey(seq)) {
-                    res+= romanIntMap.get(seq);
-                    i ++;
-                }else{
-                    res += temp;
-                }
-            }else{
-                res+= temp;
-            }
-        }
-
-
-
-
-        return res;
-    }
+		int res = 0;
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			int val = map.get(String.valueOf(c));
+			if (i + 1 < s.length() && (c == 'I' || c == 'X' || c == 'C')) {
+				StringBuilder ex = new StringBuilder();
+				ex.append(c);
+				ex.append(s.charAt(i + 1));
+				if (map.containsKey(ex.toString())) {
+					val = map.get(ex.toString());
+					i++;
+				}
+			}
+			res += val;
+		}
+		return res;
+	}
 }
