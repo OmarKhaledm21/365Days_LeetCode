@@ -14,11 +14,27 @@
  * }
  */
 class Solution {
-	public int maxDepth(TreeNode root) {
+	public int goodNodes(TreeNode root) {
+		if (root.left == null && root.right == null) {
+			return 1;
+		}
+		return goodNodes(root.left, root.val) + goodNodes(root.right, root.val) + 1;
+	}
+
+	public int goodNodes(TreeNode root, int x) {
 		if (root == null) {
 			return 0;
 		}
+		int res = 0;
 
-		return 1 + Math.max(maxDepth(root.right), maxDepth(root.left));
+		if (root.val >= x) {
+			x = root.val;
+			res++;
+		}
+
+		res += goodNodes(root.left, x);
+		res += goodNodes(root.right, x);
+
+		return res;
 	}
 }
